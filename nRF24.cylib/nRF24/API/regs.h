@@ -53,7 +53,15 @@
 /* Register: CONFIG */
 /* Address: 0x00 */
 /* Configuration Register */
-
+#define NRF_CONFIG_PRIM_RX      0
+#define NRF_CONFIG_PWR_UP       1
+#define NRF_CONFIG_CRCO         2
+#define NRF_CONFIG_EN_CRC       3
+#define NRF_CONFIG_MASK_MAX_RT  4
+#define NRF_CONFIG_MASK_TX_DS   5
+#define NRF_CONFIG_MASK_RX_DR   6
+    
+/*
 typedef enum{
     NRF_CONFIG_PRIM_RX = 0,
     NRF_CONFIG_PWR_UP = 1,
@@ -63,11 +71,20 @@ typedef enum{
     NRF_CONFIG_MASK_TX_DS = 5,
     NRF_CONFIG_MASK_RX_DR = 6
 }NRF_config_t;
+    */
 
 /* Register: EN_AA */
 /* Address: 0x01 */
 /* Enable Enhanced ShockBurst */
-
+#define NRF_EN_AA_ENAA_P0   0
+#define NRF_EN_AA_ENAA_P1   1
+#define NRF_EN_AA_ENAA_P2   2
+#define NRF_EN_AA_ENAA_P3   3
+#define NRF_EN_AA_ENAA_P4   4
+#define NRF_EN_AA_ENAA_P5   5
+#define NRF_EN_AA_ENAA_ALL  0x3F
+#define NRF_EN_AA_ENAA_NONE 0x00
+/*
 typedef enum{
     NRF_EN_AA_ENAA_P0 = 0,
     NRF_EN_AA_ENAA_P1 = 1,
@@ -78,11 +95,20 @@ typedef enum{
     NRF_EN_AA_ENAA_ALL = 0x3Fu,
     NRF_EN_AA_ENAA_NONE = 0x00u
 }NRF_en_aa_t;
+*/
 
 /* Register: EN_RXADDR */
 /* Address: 0x02 */
 /* Enabled RX Addresses */
-
+#define NRF_EN_RXADDR_ERX_P0    0
+#define NRF_EN_RXADDR_ERX_P1    1
+#define NRF_EN_RXADDR_ERX_P2    2
+#define NRF_EN_RXADDR_ERX_P3    3
+#define NRF_EN_RXADDR_ERX_P4    4
+#define NRF_EN_RXADDR_ERX_P5    5
+#define NRF_EN_RXADDR_ERX_ALL   0x3F
+#define NRF_EN_RXADDR_ERX_NONE  0x00
+/*
 typedef enum{
     NRF_EN_RXADDR_ERX_P0 = 0,
     NRF_EN_RXADDR_ERX_P1 = 1,
@@ -93,21 +119,59 @@ typedef enum{
     NRF_EN_RXADDR_ERX_ALL = 0x3Fu,
     NRF_EN_RXADDR_ERX_NONE = 0x00u
 }NRF_en_rxaddr_t;
+*/
 
 /* Register: SETUP_AW */
 /* Address: 0x03 */
 /* Setup of Address Widths(common for all data pipes) */
-
+#define NRF_SETUP_AW_3BYTES 3
+#define NRF_SETUP_AW_4BYTES 4
+#define NRF_SETUP_AW_5BYTES 1
+/*
 typedef enum{
     NRF_SETUP_AW_3BYTES = 3,
     NRF_SETUP_AW_4BYTES = 4,
     NRF_SETUP_AW_5BYTES = 1
 }NRF_setup_aw_t;
+*/
 
 /* Register: SETUP_RETR */
 /* Address: 0x04 */
 /* Setup of Automatic Retransmission */
+#define SETUP_RETR_ARD_4000   0xF0 /* 4400 us retry delay */
+#define SETUP_RETR_ARD_3750   0xE0 /* 3750 us retry delay */
+#define SETUP_RETR_ARD_3500   0xD0 /* 3500 us retry delay */
+#define SETUP_RETR_ARD_3250   0xC0 /* 3250 us retry delay */
+#define SETUP_RETR_ARD_3000   0xB0 /* 3000 us retry delay */
+#define SETUP_RETR_ARD_2750   0xA0 /* 2750 us retry delay */
+#define SETUP_RETR_ARD_2500   0x90 /* 2500 us retry delay */
+#define SETUP_RETR_ARD_2250   0x80 /* 2250 us retry delay */
+#define SETUP_RETR_ARD_2000   0x70 /* 2000 us retry delay */
+#define SETUP_RETR_ARD_1750   0x60 /* 1750 us retry delay */
+#define SETUP_RETR_ARD_1500   0x50 /* 1500 us retry delay */
+#define SETUP_RETR_ARD_1250   0x40 /* 1250 us retry delay */
+#define SETUP_RETR_ARD_1000   0x30 /* 1000 us retry delay */
+#define SETUP_RETR_ARD_750    0x20 /* 750 us retry delay */
+#define SETUP_RETR_ARD_500    0x10 /* 500 us retry delay */
+#define SETUP_RETR_ARD_250    0x00 /* 250 us retry delay */
+#define SETUP_RETR_ARC_15     0x0F /* 15 retry count */
+#define SETUP_RETR_ARC_14     0x0E /* 14 retry count */
+#define SETUP_RETR_ARC_13     0x0D /* 13 retry count */
+#define SETUP_RETR_ARC_12     0x0C /* 12 retry count */
+#define SETUP_RETR_ARC_11     0x0B /* 11 retry count */
+#define SETUP_RETR_ARC_10     0x0A /* 10 retry count */
+#define SETUP_RETR_ARC_9      0x09 /* 9 retry count */
+#define SETUP_RETR_ARC_8      0x08 /* 8 retry count */
+#define SETUP_RETR_ARC_7      0x07 /* 7 retry count */
+#define SETUP_RETR_ARC_6      0x06 /* 6 retry count */
+#define SETUP_RETR_ARC_5      0x05 /* 5 retry count */
+#define SETUP_RETR_ARC_4      0x04 /* 4 retry count */
+#define SETUP_RETR_ARC_3      0x03 /* 3 retry count */
+#define SETUP_RETR_ARC_2      0x02 /* 2 retry count */
+#define SETUP_RETR_ARC_1      0x01 /* 1 retry count */
+#define SETUP_RETR_ARC_0      0x00 /* 0 retry count, retry disabled */
 
+/*
 typedef enum{
     NRF_SETUP_RETR_ARD_4000 = 0xF0,
     NRF_SETUP_RETR_ARD_3750 = 0xE0,
@@ -142,6 +206,7 @@ typedef enum{
     NRF_SETUP_RETR_ARC_1 = 0x01,
     NRF_SETUP_RETR_ARC_0 = 0x00,
 }NRF_setup_retr_t;
+*/
 
 /* Register: RF_CH */
 /* Address: 0x05 */
@@ -151,7 +216,19 @@ typedef enum{
 /* Register: RF_SETUP */
 /* Address: 0x06 */
 /* RF Setup Register */
-
+#define RF_SETUP_RF_DR_HIGH 3
+#define RF_SETUP_PLL_LOCK   4
+#define RF_SETUP_RF_DR_LOW  5
+#define RF_SETUP_CONT_WAVE  7
+#define RF_SETUP_RF_DR_250  0x20
+#define RF_SETUP_RF_DR_1000 0x00
+#define RF_SETUP_RF_DR_2000 0x08
+#define RF_SETUP_RF_PWR     0x06
+#define RF_SETUP_RF_PWR_0   0x06
+#define RF_SETUP_RF_PWR_6   0x04
+#define RF_SETUP_RF_PWR_12  0x02
+#define RF_SETUP_RF_PWR_18  0x00
+/*
 typedef enum{
     NRF_RF_SETUP_RF_DR_HIGH = 3,  
     NRF_RF_SETUP_PLL_LOCK = 4,
@@ -166,6 +243,7 @@ typedef enum{
     NRF_RF_SETUP_RF_PWR_12 = 0x02,
     NRF_RF_SETUP_RF_PWR_18 = 0x00
 }NRF_rf_setup_t;
+*/
 
 /* Register: STATUS */
 /* Address: 0x07 */
@@ -176,6 +254,19 @@ typedef enum{
 
 #define NRF_STATUS_DATA_IS_RDY 0x40
 
+#define STATUS_TX_FULL  0
+#define STATUS_MAX_RT   4
+#define STATUS_TX_DS    5
+#define STATUS_RX_DR    6
+#define STATUS_RX_P_NO_RX_FIFO_NOT_EMPTY  0x0E
+#define STATUS_RX_P_NO_UNUSED  0x0C
+#define STATUS_RX_P_NO_5  0x0A
+#define STATUS_RX_P_NO_4  0x08
+#define STATUS_RX_P_NO_3  0x06
+#define STATUS_RX_P_NO_2  0x04
+#define STATUS_RX_P_NO_1  0x02
+#define STATUS_RX_P_NO_0  0x00
+/*
 typedef enum{
     NRF_STATUS_TX_FULL = 0,
     NRF_STATUS_MAX_RT = 4,
@@ -190,23 +281,30 @@ typedef enum{
     NRF_STATUS_RX_P_NO_1 = 0x02,
     NRF_STATUS_RX_P_NO_0 = 0x00
 }NRF_status_t;
+*/
 
 /* Register: OBSERVE TX */
 /* Address: 0x08 */
 /* Transmit observe register */
-
+#define OBSERVE_TX_PLOS_CNT 0xF0
+#define OBSERVE_TX_ARC_CNT  0x0F
+/*
 typedef enum{
     NRF_OBSERVE_TX_PLOS_CNT_MASK = 0xF0,
     NRF_OBSERVE_TX_ARC_CNT_MASK = 0x0F
 }NRF_observe_tx_t;
+*/
 
 /* Register: RPD */
 /* Address: 0x09 */
 /* Received Power Detector */
+#define RPD_RPD 0
 
+/*
 typedef enum{
     NRF_RPD_RPD = 0
 }NRF_rpd_t;
+*/
 
 /* Register: SETUP_AW */
 /* Address: 0x03 */
@@ -217,7 +315,12 @@ typedef enum{
 /* Register: FIFO_STATUS */
 /* Address: 0x17 */
 /* FIFO Status Register */
-
+#define FIFO_STATUS_RX_EMPTY    0
+#define FIFO_STATUS_RX_FULL     1
+#define FIFO_STATUS_TX_EMPTY    4
+#define FIFO_STATUS_TX_FULL     5
+#define FIFO_STATUS_TX_REUSE    6
+/*
 typedef enum{
     NRF_FIFO_STATUS_RX_EMPTY = 0,
     NRF_FIFO_STATUS_RX_FULL = 1,
@@ -225,6 +328,7 @@ typedef enum{
     NRF_FIFO_STATUS_TX_FULL = 5,
     NRF_FIFO_STATUS_TX_REUSE = 6
 }NRF_fifo_status_t;
+*/
 
 /* Register: DYNPD */
 /* Address: 0x1C */
@@ -232,6 +336,15 @@ typedef enum{
 
 #define NRF_DYNPD_DPL_POS 1
 
+#define DYNPD_DPL_P0    (NRF_DYNPD_DPL_POS << 0)
+#define DYNPD_DPL_P1    (NRF_DYNPD_DPL_POS << 1)
+#define DYNPD_DPL_P2    (NRF_DYNPD_DPL_POS << 2)
+#define DYNPD_DPL_P3    (NRF_DYNPD_DPL_POS << 3)
+#define DYNPD_DPL_P4    (NRF_DYNPD_DPL_POS << 4)
+#define DYNPD_DPL_P5    (NRF_DYNPD_DPL_POS << 5)
+#define ENABLE_DYNPD_ALLPIPES   0x3F
+#define DISABLE_DYNPD_ALLPIPES  0x00
+/*
 typedef enum{
     NRF_DYNPD_DPL_P0 = (NRF_DYNPD_DPL_POS << 0),
     NRF_DYNPD_DPL_P1 = (NRF_DYNPD_DPL_POS << 1),
@@ -242,6 +355,7 @@ typedef enum{
     NRF_DYNPD_DPL_ENABLE_ALLPIPES = 0x3F,
     NRF_DYNPD_DPL_DISABLE_ALLPIPES = 0x00
 }NRF_dynpd_t;
+*/
 
 /* Register: FEATURE */
 /* Address: 0x1D */
@@ -249,11 +363,16 @@ typedef enum{
 
 #define NRF_FEATURE_POS 1
 
+#define NRF_FEATURE_EN_DYN_ACK  (NRF_FEATURE_POS << 0)
+#define NRF_FEATURE_EN_ACK_PAY  (NRF_FEATURE_POS << 1)
+#define NRF_FEATURE_EN_DPL      (NRF_FEATURE_POS << 2)
+/*
 typedef enum{
     NRF_FEATURE_EN_DYN_ACK = (NRF_FEATURE_POS << 0),
     NRF_FEATURE_EN_ACK_PAY = (NRF_FEATURE_POS << 1),
     NRF_FEATURE_EN_DPL = (NRF_FEATURE_POS << 2)
 }NRF_feature_t;
+*/
 
 /* Command Name Mnemonics (Instructions) */
 #define NRF_R_REGISTER     0x00
