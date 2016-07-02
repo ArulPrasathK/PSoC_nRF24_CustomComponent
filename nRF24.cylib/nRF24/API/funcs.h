@@ -63,7 +63,7 @@ void `$INSTANCE_NAME`_RxPayload(uint8_t* payload, size_t payloadSize);
 
 /* New Functions */
 
-void `$INSTANCE_NAME`_EnableDynamicPayload(NRF_dynpd_t pipe);
+void `$INSTANCE_NAME`_EnableDynamicPayload(uint8_t pipe);
 void `$INSTANCE_NAME`_TxTransmitWaitNoACK(uint8_t* data, size_t payloadSize);
 void `$INSTANCE_NAME`_RxWritePayload(uint8_t pipe, uint8_t* data, size_t payloadSize);
 void `$INSTANCE_NAME`_ReuseTxPayload(void);

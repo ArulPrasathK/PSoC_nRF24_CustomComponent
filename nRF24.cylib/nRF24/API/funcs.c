@@ -245,7 +245,7 @@ void `$INSTANCE_NAME`_TxTransmit(uint8_t* data, size_t payloadSize){
 bool `$INSTANCE_NAME`_DataReady(void){
     uint8_t data;
     `$INSTANCE_NAME`_ReadSingleRegister(NRF_STATUS, &data);
-    if(NRF_STATUS_DATA_IS_RDY == data){
+    if(STATUS_DATA_IS_RDY == data){
         return true;
     }else{
         return false;    
@@ -310,7 +310,7 @@ void `$INSTANCE_NAME`_RxPayload(uint8_t* payload, size_t payloadSize){
 
 /* New Functions ======================*/
 
-void `$INSTANCE_NAME`_EnableDynamicPayload(NRF_dynpd_t pipe){
+void `$INSTANCE_NAME`_EnableDynamicPayload(uint8_t pipe){
     `$INSTANCE_NAME`_WriteSingleRegister(NRF_DYNPD, pipe);
 }
 
@@ -359,15 +359,15 @@ void `$INSTANCE_NAME`_ReadFromDataPipe(uint8_t* pipe){
 
 void `$INSTANCE_NAME`_ResetIRQSource(uint8_t* source){
     
-    if(`$INSTANCE_NAME`_GetStatus() & NRF_STATUS_RX_DR_MASK){ /* RX_DR: Data Received */
-        *source = NRF_STATUS_RX_DR;
-        `$INSTANCE_NAME`_WriteSingleRegister(NRF_STATUS, NRF_STATUS_RX_DR_MASK);
-    }else if(`$INSTANCE_NAME`_GetStatus() & NRF_STATUS_TX_DS_MASK){ /* TX_DS: Data Sent */
-        *source = NRF_STATUS_TX_DS;
-        `$INSTANCE_NAME`_WriteSingleRegister(NRF_STATUS, NRF_STATUS_TX_DS_MASK);
-    }else if(`$INSTANCE_NAME`_GetStatus() & NRF_STATUS_MAX_RT_MASK){ /* MAX_RT: Retry Timeout */
-        *source = NRF_STATUS_MAX_RT;
-        `$INSTANCE_NAME`_WriteSingleRegister(NRF_STATUS, NRF_STATUS_MAX_RT_MASK);
+    if(`$INSTANCE_NAME`_GetStatus() & STATUS_RX_DR_MASK){ /* RX_DR: Data Received */
+        *source = STATUS_RX_DR;
+        `$INSTANCE_NAME`_WriteSingleRegister(NRF_STATUS, STATUS_RX_DR_MASK);
+    }else if(`$INSTANCE_NAME`_GetStatus() & STATUS_TX_DS_MASK){ /* TX_DS: Data Sent */
+        *source = STATUS_TX_DS;
+        `$INSTANCE_NAME`_WriteSingleRegister(NRF_STATUS, STATUS_TX_DS_MASK);
+    }else if(`$INSTANCE_NAME`_GetStatus() & STATUS_MAX_RT_MASK){ /* MAX_RT: Retry Timeout */
+        *source = STATUS_MAX_RT;
+        `$INSTANCE_NAME`_WriteSingleRegister(NRF_STATUS, STATUS_MAX_RT_MASK);
     }
 }
 
@@ -408,7 +408,7 @@ void `$INSTANCE_NAME`_GetRxFIFOPacketCount(uint8_t pipe, uint8_t* count){
  */
 void `$INSTANCE_NAME`_GetRetransmissionsCount(uint8_t* count){
     `$INSTANCE_NAME`_ReadSingleRegister(NRF_OBSERVE_TX, count);
-    *count &= NRF_OBSERVE_TX_ARC_CNT_MASK;
+    *count &= OBSERVE_TX_ARC_CNT_MASK;
 }
 
 /**
@@ -427,7 +427,7 @@ void `$INSTANCE_NAME`_ReceivedPowerDetector(uint8_t* power){
  */
 void `$INSTANCE_NAME`_GetLostPackets(uint8_t* lostPackets){
     `$INSTANCE_NAME`_ReadSingleRegister(NRF_OBSERVE_TX, lostPackets);
-    *lostPackets &= NRF_OBSERVE_TX_PLOS_CNT_MASK;
+    *lostPackets &= OBSERVE_TX_PLOS_CNT_MASK;
     *lostPackets >>= 4;
 }
 

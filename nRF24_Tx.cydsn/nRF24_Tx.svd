@@ -7,7 +7,7 @@
   <width>32</width>
   <peripherals>
     <peripheral>
-      <name>hola_Ctrl_CE</name>
+      <name>nRF_Tx_Ctrl_CE</name>
       <description>No description available</description>
       <baseAddress>0x40006577</baseAddress>
       <addressBlock>
@@ -17,7 +17,7 @@
       </addressBlock>
       <registers>
         <register>
-          <name>hola_Ctrl_CE_CONTROL_REG</name>
+          <name>nRF_Tx_Ctrl_CE_CONTROL_REG</name>
           <description>No description available</description>
           <addressOffset>0x0</addressOffset>
           <size>8</size>
@@ -28,7 +28,7 @@
       </registers>
     </peripheral>
     <peripheral>
-      <name>hola_Ctrl_SS</name>
+      <name>nRF_Tx_Ctrl_SS</name>
       <description>No description available</description>
       <baseAddress>0x40006576</baseAddress>
       <addressBlock>
@@ -38,7 +38,7 @@
       </addressBlock>
       <registers>
         <register>
-          <name>hola_Ctrl_SS_CONTROL_REG</name>
+          <name>nRF_Tx_Ctrl_SS_CONTROL_REG</name>
           <description>No description available</description>
           <addressOffset>0x0</addressOffset>
           <size>8</size>
