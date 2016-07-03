@@ -46,7 +46,7 @@ void `$INSTANCE_NAME`_StandbyIMode(void);
 void `$INSTANCE_NAME`_StandbyIIMode(void);
 void `$INSTANCE_NAME`_RxMode(void);
 void `$INSTANCE_NAME`_TxMode(void);
-void `$INSTANCE_NAME`_Init(NRF_INIT_t* init);
+void `$INSTANCE_NAME`_Start(NRF_INIT_t* init);
 void `$INSTANCE_NAME`_SetRxAddress(uint8_t* addr, size_t addrSize);
 void `$INSTANCE_NAME`_SetRxPipeAddress(uint8_t pipeNo, uint8_t* addr, size_t addrSize);
 void `$INSTANCE_NAME`_SetTxAddress(uint8_t* addr, size_t addrSize);
