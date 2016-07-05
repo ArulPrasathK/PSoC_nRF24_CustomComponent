@@ -25,8 +25,8 @@ int main(){
     isrSW_Start();
     UART_Start();
     ADC_Start();
-    
-    CyDelay(100);
+
+    CyDelay(50);
     
     UART_PutString("nRF Tx\n");
     
@@ -38,6 +38,9 @@ int main(){
     tx.SETUP_RETR_ARC = NRF_SETUP_RETR_ARC_15;
     tx.SETUP_RETR_ARD = NRF_SETUP_RETR_ARD_1500;
     
+    /* Start the component before anything else */
+    nRF_Tx_Start(&tx);
+    
     /* Test Rx Payload */
     nRF_Tx_WriteSingleRegister(NRF_DYNPD, 0x01u);
     nRF_Tx_WriteSingleRegister(NRF_FEATURE, 0x06u);
@@ -45,8 +48,7 @@ int main(){
     
     nRF_Tx_SetRxAddress(ADDR, sizeof(ADDR));
     nRF_Tx_SetTxAddress(ADDR, sizeof(ADDR));
-    nRF_Tx_Start(&tx);
-    
+
     nRF_Tx_TxTransmit(data, sizeof(data));
     CyDelay(4000);
     nRF_Tx_GetRetransmissionsCount(&test);
@@ -72,7 +74,6 @@ int main(){
             data[2] = ADCoutput & 0xFF;
             nRF_Tx_TxTransmit(data, sizeof(data));
         }
-        CyDelay(20);
         
         nRF_Tx_GetLostPackets(&test);
         if(0x0F == test){

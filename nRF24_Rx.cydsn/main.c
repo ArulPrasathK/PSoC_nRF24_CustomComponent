@@ -47,6 +47,10 @@ int main()
     rx.SETUP_RETR_ARC = NRF_SETUP_RETR_ARC_15;
     /**/
     rx.SETUP_RETR_ARD = NRF_SETUP_RETR_ARD_1500;
+
+    /* Start the component, passing as parameter
+    a NRF_INIT_t struct */
+    nRF_Rx_Start(&rx);
     
     /* Test Rx Payload */
     nRF_Rx_EnableDynamicPayload(NRF_DYNPD_DPL_P0);
@@ -54,9 +58,7 @@ int main()
     nRF_Rx_SetRxPayloadSize(NRF_RX_PW_P0, PAYLOAD_SIZE);
     nRF_Rx_SetTxAddress(ADDR, sizeof(ADDR));
     nRF_Rx_SetRxAddress(ADDR, sizeof(ADDR));
-    /* Start the component, passing as parameter
-    a NRF_INIT_t struct */
-    nRF_Rx_Start(&rx);
+
     
     for(;;){
         if(isrFlag){
