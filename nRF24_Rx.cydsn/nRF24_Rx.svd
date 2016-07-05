@@ -9,7 +9,7 @@
     <peripheral>
       <name>nRF_Rx_Ctrl_CE</name>
       <description>No description available</description>
-      <baseAddress>0x40006577</baseAddress>
+      <baseAddress>0x4000647C</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>
@@ -30,7 +30,7 @@
     <peripheral>
       <name>nRF_Rx_Sts</name>
       <description>No description available</description>
-      <baseAddress>0x40006567</baseAddress>
+      <baseAddress>0x4000646B</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>
@@ -185,7 +185,7 @@
     <peripheral>
       <name>nRF_Rx_Ctrl_SS</name>
       <description>No description available</description>
-      <baseAddress>0x40006576</baseAddress>
+      <baseAddress>0x4000647A</baseAddress>
       <addressBlock>
         <offset>0</offset>
         <size>0x0</size>

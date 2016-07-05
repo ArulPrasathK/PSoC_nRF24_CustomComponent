@@ -1,4 +1,5 @@
 #include <project.h>
+#include "cyapicallbacks.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -112,6 +113,18 @@ int main()
         }
 
     }
+}
+
+void isr_SW_Interrupt_InterruptCallback(void){
+    
+    /* Clear PICU interrupt */
+    SW_ClearInterrupt();  
+}
+
+void nRF_Rx_isrIRQ_Interrupt_InterruptCallback(void){
+    isrFlag = true;
+    /* Clear PICU interrupt */
+    IRQ_ClearInterrupt();
 }
 
 /* [] END OF FILE */

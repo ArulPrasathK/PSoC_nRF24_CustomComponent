@@ -129,6 +129,7 @@ void `$INSTANCE_NAME`_Start(NRF_INIT_t* init){
         `$INSTANCE_NAME`_RxMode();
     }
     `$INSTANCE_NAME`_SPI_Start();
+    `$INSTANCE_NAME`_isrIRQ_Start();
     return;
 }
 

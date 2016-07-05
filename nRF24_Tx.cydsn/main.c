@@ -1,4 +1,5 @@
 #include <project.h>
+#include "cyapicallbacks.h"
 #include <stdbool.h>
 
 #define PAYLOAD_SIZE    10
@@ -23,6 +24,7 @@ int main(){
     CyGlobalIntEnable;
     isrSW_Start();
     UART_Start();
+    ADC_Start();
     
     CyDelay(100);
     
@@ -65,7 +67,7 @@ int main(){
             test++;
             data[9] = test;
             data[0] = pressCount;
-            //ADCoutput = ADC_Read32();
+            ADCoutput = ADC_Read32();
             data[1] = (ADCoutput & 0xFF00) >> 8;
             data[2] = ADCoutput & 0xFF;
             nRF_Tx_TxTransmit(data, sizeof(data));
@@ -123,6 +125,19 @@ int main(){
 }
 
     }
+}
+
+void isrSW_Interrupt_InterruptCallback(void){
+    pressCount++;
+    /* Clear the PICU interrupt */
+    SW_ClearInterrupt();
+}
+
+void nRF_Tx_isrIRQ_Interrupt_InterruptCallback(void){
+    UART_PutString("Hola isr de IRQ\n");
+    isrFlag = true;
+    /* Clear the PICU interrupt */
+    IRQ_ClearInterrupt();
 }
 
 /* [] END OF FILE */
