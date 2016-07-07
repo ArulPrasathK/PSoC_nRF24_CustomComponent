@@ -52,7 +52,7 @@ int main(){
     for(;;){
         
         count++;
-        if(10 == count){
+        if(12 == count){
             if(250 == pressCount){
                 pressCount = 0;
             }
@@ -68,7 +68,8 @@ int main(){
             data[2] = ADCoutput & 0xFF;
             nRF_Tx_TxTransmit(data, sizeof(data));
         }
-        CyDelay(100);
+        CyDelay(20);
+
         nRF_Tx_GetLostPackets(&test);
         if(0x0F == test){
             nRF_Tx_ResetStatusIRQ(NRF_STATUS_MAX_RT);

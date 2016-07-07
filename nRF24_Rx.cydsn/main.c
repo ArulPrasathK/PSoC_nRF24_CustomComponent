@@ -87,7 +87,7 @@ int main()
         
         if(printFlag){
             adcResult = (RXdata[1] << 8) | RXdata[2];
-            adcVolt = (3.3 / 65536) * adcResult;
+            adcVolt = (5 / 65536) * adcResult;
             sprintf(str, "%.4f   ", adcVolt);
             UART_PutHexByte(RXdata[0]);
             UART_PutString("\r\n");
