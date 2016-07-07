@@ -49,16 +49,10 @@ int main(){
     nRF_Tx_SetRxAddress(ADDR, sizeof(ADDR));
     nRF_Tx_SetTxAddress(ADDR, sizeof(ADDR));
 
-    nRF_Tx_TxTransmit(data, sizeof(data));
-    CyDelay(4000);
-    nRF_Tx_GetRetransmissionsCount(&test);
-    UART_PutHexByte(test);
-    UART_PutCRLF();
-
     for(;;){
         
         count++;
-        if(12 == count){
+        if(10 == count){
             if(250 == pressCount){
                 pressCount = 0;
             }
@@ -74,7 +68,7 @@ int main(){
             data[2] = ADCoutput & 0xFF;
             nRF_Tx_TxTransmit(data, sizeof(data));
         }
-        
+        CyDelay(100);
         nRF_Tx_GetLostPackets(&test);
         if(0x0F == test){
             nRF_Tx_ResetStatusIRQ(NRF_STATUS_MAX_RT);
@@ -123,7 +117,7 @@ int main(){
             UART_PutHexByte(RXdata[9]);
             UART_PutString("\r\n");
             printFlag = false;
-}
+        }
 
     }
 }
@@ -135,7 +129,6 @@ void isrSW_Interrupt_InterruptCallback(void){
 }
 
 void nRF_Tx_isrIRQ_Interrupt_InterruptCallback(void){
-    UART_PutString("Hola isr de IRQ\n");
     isrFlag = true;
     /* Clear the PICU interrupt */
     IRQ_ClearInterrupt();

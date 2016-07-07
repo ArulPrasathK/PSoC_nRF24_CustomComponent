@@ -436,9 +436,6 @@ void `$INSTANCE_NAME`_GetLostPackets(uint8_t* lostPackets){
 /* Primitive Functions */
 
 uint8_t `$INSTANCE_NAME`_ReadBit(uint8_t reg, uint8_t bit){
-    if(!((0 <= bit) && (bit <= 7))){
-        return 0x02;    
-    }
 	uint8_t temp = 0x00u;
     
     `$INSTANCE_NAME`_ReadSingleRegister(reg, &temp);
@@ -451,7 +448,7 @@ uint8_t `$INSTANCE_NAME`_ReadBit(uint8_t reg, uint8_t bit){
 
 void `$INSTANCE_NAME`_ReadSingleRegister(uint8_t reg, uint8_t* data){
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
-    `$INSTANCE_NAME`_Ctrl_SS_Write(1);
+    `$INSTANCE_NAME`_Ctrl_SS_Write(0);
     `$INSTANCE_NAME`_SPI_WriteTxData(NRF_R_REGISTER | reg);
     `$INSTANCE_NAME`_SPI_WriteTxData(NRF_NOP);
     while(!(`$INSTANCE_NAME`_SPI_ReadTxStatus() & `$INSTANCE_NAME`_SPI_STS_SPI_IDLE));
@@ -478,10 +475,6 @@ void `$INSTANCE_NAME`_ReadMultipleRegister(uint8_t reg, uint8_t* bufIn , size_t 
 }
 
 void `$INSTANCE_NAME`_WriteBit(uint8_t reg, uint8_t bit, uint8_t value){
-    if(!((0 <= bit) && (bit <= 7))){
-        return;    
-    }
-
 	uint8_t temp = 0x00u;
     
     `$INSTANCE_NAME`_ReadSingleRegister(reg, &temp);

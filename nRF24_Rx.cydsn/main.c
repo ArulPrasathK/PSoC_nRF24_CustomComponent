@@ -118,7 +118,6 @@ int main()
 }
 
 void isr_SW_Interrupt_InterruptCallback(void){
-    
     /* Clear PICU interrupt */
     SW_ClearInterrupt();  
 }
