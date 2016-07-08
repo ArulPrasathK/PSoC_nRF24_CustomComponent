@@ -6,6 +6,7 @@
 #define NRF_CHANNEL     76
 
 volatile bool isrFlag = false;
+volatile bool isrTimerFlag = false;
 volatile uint8_t pressCount = 0;
 bool printFlag = false;
 uint16_t ADCoutput;
@@ -23,12 +24,13 @@ int main(){
 
     CyGlobalIntEnable;
     isrSW_Start();
+    isr_Timer_Start();
     UART_Start();
     ADC_Start();
 
     CyDelay(50);
     
-    UART_PutString("nRF Tx\n");
+    UART_PutString("nRF Tx\r\n");
     
     NRF_INIT_t tx;
     tx.channel = NRF_CHANNEL;
@@ -41,25 +43,19 @@ int main(){
     /* Start the component before anything else */
     nRF_Tx_Start(&tx);
     
-    /* Test Rx Payload */
-    nRF_Tx_WriteSingleRegister(NRF_DYNPD, 0x01u);
-    nRF_Tx_WriteSingleRegister(NRF_FEATURE, 0x06u);
+    /* Test Dynamic Payload */
+    nRF_Tx_EnableDynamicPayload(NRF_DYNPD_DPL_P0);
+
     nRF_Tx_SetRxPayloadSize(NRF_RX_PW_P0, PAYLOAD_SIZE);
     
     nRF_Tx_SetRxAddress(ADDR, sizeof(ADDR));
     nRF_Tx_SetTxAddress(ADDR, sizeof(ADDR));
+    
+    Timer_Start();
 
     for(;;){
         
-        count++;
-        if(12 == count){
-            if(250 == pressCount){
-                pressCount = 0;
-            }
-            if(250 == test){
-                test = 0;
-            }
-            count = 0;
+        if(true == isrTimerFlag){
             test++;
             data[9] = test;
             data[0] = pressCount;
@@ -67,18 +63,12 @@ int main(){
             data[1] = (ADCoutput & 0xFF00) >> 8;
             data[2] = ADCoutput & 0xFF;
             nRF_Tx_TxTransmit(data, sizeof(data));
+            isrTimerFlag = false;
         }
-        CyDelay(20);
 
-        nRF_Tx_GetLostPackets(&test);
-        if(0x0F == test){
-            nRF_Tx_ResetStatusIRQ(NRF_STATUS_MAX_RT);
-        }
-        UART_PutHexByte(test);
-        UART_PutCRLF();
-        
         if(isrFlag){
             if(nRF_Tx_GetStatus() & NRF_STATUS_RX_DR_MASK){
+                UART_PutString("RX\r\n");
                 do{
                     nRF_Tx_RxPayload(RXdata, sizeof(RXdata));
                     nRF_Tx_ResetStatusIRQ(NRF_STATUS_RX_DR);
@@ -86,13 +76,14 @@ int main(){
                 }while(!(status & NRF_STATUS_TX_FIFO_FULL));
                 printFlag = true;
             }else if(nRF_Tx_GetStatus() & NRF_STATUS_TX_DS_MASK){
+                UART_PutString("TX\r\n");
                 LED_Write(~LED_Read());
                 nRF_Tx_ResetStatusIRQ(NRF_STATUS_TX_DS);
             }else if(nRF_Tx_GetStatus() & NRF_STATUS_MAX_RT_MASK){
+                UART_PutString("Max RT\r\n");
                 MAX_Write(~MAX_Read());
                 nRF_Tx_ResetStatusIRQ(NRF_STATUS_MAX_RT);
             }
-            
             isrFlag = false;
         }
         
@@ -125,14 +116,23 @@ int main(){
 
 void isrSW_Interrupt_InterruptCallback(void){
     pressCount++;
+    UART_PutString("SW Interrupt\r\n");
     /* Clear the PICU interrupt */
     SW_ClearInterrupt();
 }
 
 void nRF_Tx_isrIRQ_Interrupt_InterruptCallback(void){
     isrFlag = true;
+    UART_PutString("IRQ Interrupt\r\n");
     /* Clear the PICU interrupt */
     IRQ_ClearInterrupt();
+}
+
+void isr_Timer_Interrupt_InterruptCallback(void){
+    /* Read and clear the Timer status register */
+    UART_PutString("Timer Interrupt\r\n");
+    Timer_STATUS;
+    isrTimerFlag = true;
 }
 
 /* [] END OF FILE */

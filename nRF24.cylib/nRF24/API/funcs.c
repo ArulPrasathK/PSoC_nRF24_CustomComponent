@@ -88,8 +88,6 @@ void `$INSTANCE_NAME`_StandbyIIMode(void){
  * @param action Action that lead to triggering this event.
  */
 void `$INSTANCE_NAME`_RxMode(void){
-    `$INSTANCE_NAME`_FlushRx();
-    `$INSTANCE_NAME`_FlushTx();
     /*=========================================================
     * To enter this mode, nRF24 must have PWR_UP bit set high,
     * PRIM_RX bit set high and the CE pin set high
@@ -104,14 +102,12 @@ void `$INSTANCE_NAME`_RxMode(void){
  * @param action Action that lead to triggering this event.
  */
 void `$INSTANCE_NAME`_TxMode(void){
-    `$INSTANCE_NAME`_FlushRx();
-    `$INSTANCE_NAME`_FlushTx();
     /*=========================================================
     * To enter this mode, nRF24 must have PWR_UP bit set high,
-    * PRIM_RX bit set low and the CE pin set high
+    * PRIM_RX bit set low and the CE pin set low
     =========================================================*/
     `$INSTANCE_NAME`_WriteSingleRegister(NRF_CONFIG, 0x06u);
-    `$INSTANCE_NAME`_Listen(true);
+    `$INSTANCE_NAME`_Listen(false);
 }
 
 /**
@@ -130,6 +126,8 @@ void `$INSTANCE_NAME`_Start(NRF_INIT_t* init){
     }else{
         `$INSTANCE_NAME`_RxMode();
     }
+    `$INSTANCE_NAME`_FlushRx();
+    `$INSTANCE_NAME`_FlushTx();
 }
 
 /**
@@ -313,6 +311,8 @@ void `$INSTANCE_NAME`_RxPayload(uint8_t* payload, size_t payloadSize){
 /* New Functions ======================*/
 
 void `$INSTANCE_NAME`_EnableDynamicPayload(uint8_t pipe){
+    `$INSTANCE_NAME`_WriteSingleRegister(NRF_EN_AA, pipe);
+    `$INSTANCE_NAME`_WriteSingleRegister(NRF_FEATURE, NRF_FEATURE_EN_ACK_PAY | NRF_FEATURE_EN_DPL);
     `$INSTANCE_NAME`_WriteSingleRegister(NRF_DYNPD, pipe);
 }
 

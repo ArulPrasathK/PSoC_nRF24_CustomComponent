@@ -54,12 +54,11 @@ int main()
     
     /* Test Rx Payload */
     nRF_Rx_EnableDynamicPayload(NRF_DYNPD_DPL_P0);
-    nRF_Rx_WriteSingleRegister(NRF_FEATURE, NRF_FEATURE_EN_ACK_PAY | NRF_FEATURE_EN_DPL);
+
     nRF_Rx_SetRxPayloadSize(NRF_RX_PW_P0, PAYLOAD_SIZE);
     nRF_Rx_SetTxAddress(ADDR, sizeof(ADDR));
     nRF_Rx_SetRxAddress(ADDR, sizeof(ADDR));
 
-    
     for(;;){
         if(isrFlag){
             /* We read the Status register and see if the cause of the IRQ is because data is ready */

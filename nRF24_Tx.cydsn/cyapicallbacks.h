@@ -26,5 +26,9 @@
     #define nRF_Tx_isrIRQ_INTERRUPT_INTERRUPT_CALLBACK
     void nRF_Tx_isrIRQ_Interrupt_InterruptCallback(void);
     
+    /**/
+    #define isr_Timer_INTERRUPT_INTERRUPT_CALLBACK
+    void isr_Timer_Interrupt_InterruptCallback(void);
+    
 #endif /* CYAPICALLBACKS_H */   
 /* [] */
