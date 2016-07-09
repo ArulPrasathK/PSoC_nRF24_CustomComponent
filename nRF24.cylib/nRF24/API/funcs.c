@@ -117,7 +117,6 @@ void `$INSTANCE_NAME`_TxMode(void){
  */
 void `$INSTANCE_NAME`_Start(NRF_INIT_t* init){
     `$INSTANCE_NAME`_SPI_Start();
-    `$INSTANCE_NAME`_isrIRQ_Start();
     `$INSTANCE_NAME`_SetChannel(init->channel);
     `$INSTANCE_NAME`_WriteSingleRegister(NRF_RF_SETUP, init->RF_SETUP_DR | init->RF_SETUP_PWR);
     `$INSTANCE_NAME`_WriteSingleRegister(NRF_SETUP_RETR, init->SETUP_RETR_ARD | init->SETUP_RETR_ARC);
@@ -128,6 +127,7 @@ void `$INSTANCE_NAME`_Start(NRF_INIT_t* init){
     }
     `$INSTANCE_NAME`_FlushRx();
     `$INSTANCE_NAME`_FlushTx();
+    `$INSTANCE_NAME`_isrIRQ_Start();
 }
 
 /**

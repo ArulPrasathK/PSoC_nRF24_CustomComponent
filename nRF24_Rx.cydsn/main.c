@@ -21,8 +21,8 @@ uint8_t status = 0x00u,
         RXPayload[PAYLOAD_SIZE] = {0xDEu, 0xADu, 0xBEu, 0xEFu, 0xC0u, 0xFFu, 0xEEu, 0xBAu, 0x0BE, 0xFFu},
         ADDR[5] = {0x11u, 0x22u, 0x33u, 0x44u, 0x55u};
 
-int main()
-{
+int main(){
+
     CyGlobalIntEnable;
     
     /* Start the UART for printing to console */
@@ -58,8 +58,18 @@ int main()
     nRF_Rx_SetRxPayloadSize(NRF_RX_PW_P0, PAYLOAD_SIZE);
     nRF_Rx_SetTxAddress(ADDR, sizeof(ADDR));
     nRF_Rx_SetRxAddress(ADDR, sizeof(ADDR));
+    
+    uint8_t config = 0;
+    nRF_Rx_ReadSingleRegister(NRF_CONFIG, &config);
+    UART_PutHexByte(config);
+    UART_PutCRLF();
+
+    nRF_Rx_ReadSingleRegister(NRF_STATUS, &config);
+    UART_PutHexByte(config);
+    UART_PutCRLF();
 
     for(;;){
+
         if(isrFlag){
             /* We read the Status register and see if the cause of the IRQ is because data is ready */
             if(nRF_Rx_GetStatus() & NRF_STATUS_RX_DR_MASK){
@@ -123,6 +133,9 @@ void isr_SW_Interrupt_InterruptCallback(void){
 
 void nRF_Rx_isrIRQ_Interrupt_InterruptCallback(void){
     isrFlag = true;
+    UART_PutString("Status: ");
+    UART_PutHexByte(nRF_Rx_GetStatus());
+    UART_PutCRLF();
     /* Clear PICU interrupt */
     IRQ_ClearInterrupt();
 }

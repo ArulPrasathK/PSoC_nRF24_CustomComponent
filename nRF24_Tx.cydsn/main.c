@@ -51,6 +51,15 @@ int main(){
     nRF_Tx_SetRxAddress(ADDR, sizeof(ADDR));
     nRF_Tx_SetTxAddress(ADDR, sizeof(ADDR));
     
+    uint8_t config = 0;
+    nRF_Tx_ReadSingleRegister(NRF_CONFIG, &config);
+    UART_PutHexByte(config);
+    UART_PutCRLF();
+    
+    nRF_Tx_ReadSingleRegister(NRF_STATUS, &config);
+    UART_PutHexByte(config);
+    UART_PutCRLF();
+    
     Timer_Start();
 
     for(;;){
@@ -116,21 +125,23 @@ int main(){
 
 void isrSW_Interrupt_InterruptCallback(void){
     pressCount++;
-    UART_PutString("SW Interrupt\r\n");
+    UART_PutString("SW\r\n");
     /* Clear the PICU interrupt */
     SW_ClearInterrupt();
 }
 
 void nRF_Tx_isrIRQ_Interrupt_InterruptCallback(void){
     isrFlag = true;
-    UART_PutString("IRQ Interrupt\r\n");
+    UART_PutString("Status: ");
+    UART_PutHexByte(nRF_Tx_GetStatus());
+    UART_PutCRLF();
     /* Clear the PICU interrupt */
     IRQ_ClearInterrupt();
 }
 
 void isr_Timer_Interrupt_InterruptCallback(void){
+    UART_PutString("Timer\r\n");
     /* Read and clear the Timer status register */
-    UART_PutString("Timer Interrupt\r\n");
     Timer_STATUS;
     isrTimerFlag = true;
 }
