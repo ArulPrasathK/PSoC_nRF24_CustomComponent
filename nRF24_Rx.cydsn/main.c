@@ -58,15 +58,6 @@ int main(){
     nRF_Rx_SetRxPayloadSize(NRF_RX_PW_P0, PAYLOAD_SIZE);
     nRF_Rx_SetTxAddress(ADDR, sizeof(ADDR));
     nRF_Rx_SetRxAddress(ADDR, sizeof(ADDR));
-    
-    uint8_t config = 0;
-    nRF_Rx_ReadSingleRegister(NRF_CONFIG, &config);
-    UART_PutHexByte(config);
-    UART_PutCRLF();
-
-    nRF_Rx_ReadSingleRegister(NRF_STATUS, &config);
-    UART_PutHexByte(config);
-    UART_PutCRLF();
 
     for(;;){
 
@@ -95,14 +86,14 @@ int main(){
         }
         
         if(printFlag){
-            adcResult = (RXdata[1] << 8) | RXdata[2];
-            adcVolt = (5 / 65536) * adcResult;
-            sprintf(str, "%.4f   ", adcVolt);
             UART_PutHexByte(RXdata[0]);
             UART_PutString("\r\n");
-            UART_PutHexByte(RXdata[1]);
+            adcResult = (RXdata[1] << 8) | RXdata[2];
+            UART_PutHexInt(adcResult);
             UART_PutString("\r\n");
-            UART_PutHexByte(RXdata[2]);
+            adcVolt = (5 / 65536) * adcResult;
+            sprintf(str, "%.4f   ", adcVolt);
+            UART_PutString(str);
             UART_PutString("\r\n");
             UART_PutHexByte(RXdata[3]);
             UART_PutString("\r\n");
@@ -117,9 +108,7 @@ int main(){
             UART_PutHexByte(RXdata[8]);
             UART_PutString("\r\n");
             UART_PutHexByte(RXdata[9]);
-            UART_PutString("\r\n");
-            UART_PutString(str);
-            UART_PutString("\r\n");
+            UART_PutString("\r\n\n");
             printFlag = false;
         }
 
@@ -127,12 +116,14 @@ int main(){
 }
 
 void isr_SW_Interrupt_InterruptCallback(void){
+    RXPayload[9] = 0;
     /* Clear PICU interrupt */
     SW_ClearInterrupt();  
 }
 
 void nRF_Rx_isrIRQ_Interrupt_InterruptCallback(void){
     isrFlag = true;
+    RXPayload[9]++;
     UART_PutString("Status: ");
     UART_PutHexByte(nRF_Rx_GetStatus());
     UART_PutCRLF();

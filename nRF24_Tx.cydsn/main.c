@@ -7,9 +7,9 @@
 
 volatile bool isrFlag = false;
 volatile bool isrTimerFlag = false;
-volatile uint8_t pressCount = 0;
+volatile uint8_t pressCount = 10;
 bool printFlag = false;
-uint16_t ADCoutput;
+uint32_t ADCoutput;
 
 uint8_t status = 0x00u,
         count = 0x00u,
@@ -27,6 +27,7 @@ int main(){
     isr_Timer_Start();
     UART_Start();
     ADC_Start();
+    ADC_StartConvert();
 
     CyDelay(50);
     
@@ -51,24 +52,18 @@ int main(){
     nRF_Tx_SetRxAddress(ADDR, sizeof(ADDR));
     nRF_Tx_SetTxAddress(ADDR, sizeof(ADDR));
     
-    uint8_t config = 0;
-    nRF_Tx_ReadSingleRegister(NRF_CONFIG, &config);
-    UART_PutHexByte(config);
-    UART_PutCRLF();
-    
-    nRF_Tx_ReadSingleRegister(NRF_STATUS, &config);
-    UART_PutHexByte(config);
-    UART_PutCRLF();
-    
     Timer_Start();
 
     for(;;){
         
         if(true == isrTimerFlag){
             test++;
-            data[9] = test;
             data[0] = pressCount;
+            data[9] = test;
             ADCoutput = ADC_Read32();
+            UART_PutString("Resultado de la conversion del ADC: ");
+            UART_PutHexInt((uint16_t)ADCoutput);
+            UART_PutCRLF();
             data[1] = (ADCoutput & 0xFF00) >> 8;
             data[2] = ADCoutput & 0xFF;
             nRF_Tx_TxTransmit(data, sizeof(data));
@@ -76,6 +71,7 @@ int main(){
         }
 
         if(isrFlag){
+            
             if(nRF_Tx_GetStatus() & NRF_STATUS_RX_DR_MASK){
                 UART_PutString("RX\r\n");
                 do{
@@ -125,7 +121,6 @@ int main(){
 
 void isrSW_Interrupt_InterruptCallback(void){
     pressCount++;
-    UART_PutString("SW\r\n");
     /* Clear the PICU interrupt */
     SW_ClearInterrupt();
 }
