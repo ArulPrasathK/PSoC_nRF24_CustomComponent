@@ -91,8 +91,8 @@ int main(){
             adcResult = (RXdata[1] << 8) | RXdata[2];
             UART_PutHexInt(adcResult);
             UART_PutString("\r\n");
-            adcVolt = (5 / 65536) * adcResult;
-            sprintf(str, "%.4f   ", adcVolt);
+            adcVolt = 3.29f;
+            sprintf(str, "%.4f", adcVolt);
             UART_PutString(str);
             UART_PutString("\r\n");
             UART_PutHexByte(RXdata[3]);
