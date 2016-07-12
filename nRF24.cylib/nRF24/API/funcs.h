@@ -61,6 +61,7 @@ void `$INSTANCE_NAME`_SetAutoACK(uint8_t pipe, uint8_t set); /* set = 1 to enabl
 void `$INSTANCE_NAME`_FlushRx(void);
 void `$INSTANCE_NAME`_FlushTx(void);
 void `$INSTANCE_NAME`_RxPayload(uint8_t* payload, size_t payloadSize);
+void `$INSTANCE_NAME`_SendCommand(uint8_t cmd);
 
 /* New Functions */
 

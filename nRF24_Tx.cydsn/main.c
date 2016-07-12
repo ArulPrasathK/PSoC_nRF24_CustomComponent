@@ -57,6 +57,9 @@ int main(){
     for(;;){
         
         if(true == isrTimerFlag){
+            // Stop the Timer just for fun
+            Timer_Stop();
+
             test++;
             data[0] = pressCount;
             data[9] = test;
@@ -68,11 +71,17 @@ int main(){
             data[2] = ADCoutput & 0xFF;
             nRF_Tx_TxTransmit(data, sizeof(data));
             isrTimerFlag = false;
+
+            // Start the Timer again
+            Timer_Start();
         }
 
         if(isrFlag){
             
             if(nRF_Tx_GetStatus() & NRF_STATUS_RX_DR_MASK){
+                UART_PutString("Status: ");
+                UART_PutHexByte(nRF_Tx_GetStatus());
+                UART_PutCRLF();
                 UART_PutString("RX\r\n");
                 do{
                     nRF_Tx_RxPayload(RXdata, sizeof(RXdata));
@@ -81,14 +90,21 @@ int main(){
                 }while(!(status & NRF_STATUS_TX_FIFO_FULL));
                 printFlag = true;
             }else if(nRF_Tx_GetStatus() & NRF_STATUS_TX_DS_MASK){
+                UART_PutString("Status: ");
+                UART_PutHexByte(nRF_Tx_GetStatus());
+                UART_PutCRLF();
                 UART_PutString("TX\r\n");
                 LED_Write(~LED_Read());
                 nRF_Tx_ResetStatusIRQ(NRF_STATUS_TX_DS);
             }else if(nRF_Tx_GetStatus() & NRF_STATUS_MAX_RT_MASK){
+                UART_PutString("Status: ");
+                UART_PutHexByte(nRF_Tx_GetStatus());
+                UART_PutCRLF();
                 UART_PutString("Max RT\r\n");
                 MAX_Write(~MAX_Read());
                 nRF_Tx_ResetStatusIRQ(NRF_STATUS_MAX_RT);
             }
+
             isrFlag = false;
         }
         
@@ -127,9 +143,6 @@ void isrSW_Interrupt_InterruptCallback(void){
 
 void nRF_Tx_isrIRQ_Interrupt_InterruptCallback(void){
     isrFlag = true;
-    UART_PutString("Status: ");
-    UART_PutHexByte(nRF_Tx_GetStatus());
-    UART_PutCRLF();
     /* Clear the PICU interrupt */
     IRQ_ClearInterrupt();
 }

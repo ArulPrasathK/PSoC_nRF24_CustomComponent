@@ -50,7 +50,7 @@ uint8_t `$INSTANCE_NAME`_GetStatus(void){
     while(!(`$INSTANCE_NAME`_SPI_ReadTxStatus() & `$INSTANCE_NAME`_SPI_STS_SPI_IDLE));
     `$INSTANCE_NAME`_Ctrl_SS_Write(1);
     
-	return (uint8_t)`$INSTANCE_NAME`_SPI_ReadRxData();
+	return `$INSTANCE_NAME`_SPI_ReadRxData();
 }
 
 /**
@@ -115,7 +115,7 @@ void `$INSTANCE_NAME`_TxMode(void){
  * @param pin    Pin that triggered this event.
  * @param action Action that lead to triggering this event.
  */
-void `$INSTANCE_NAME`_Start(NRF_INIT_t* init){
+void `$INSTANCE_NAME`_Start(NRF_INIT_t *init){
     `$INSTANCE_NAME`_SPI_Start();
     `$INSTANCE_NAME`_SetChannel(init->channel);
     `$INSTANCE_NAME`_WriteSingleRegister(NRF_RF_SETUP, init->RF_SETUP_DR | init->RF_SETUP_PWR);
@@ -135,7 +135,7 @@ void `$INSTANCE_NAME`_Start(NRF_INIT_t* init){
  * @param pin    Pin that triggered this event.
  * @param action Action that lead to triggering this event.
  */
-void `$INSTANCE_NAME`_SetRxAddress(uint8_t* addr, size_t addrSize){
+void `$INSTANCE_NAME`_SetRxAddress(uint8_t *addr, size_t addrSize){
     `$INSTANCE_NAME`_WriteMultipleRegister(NRF_RX_ADDR_P0, addr, addrSize);
 }
 
@@ -144,39 +144,37 @@ void `$INSTANCE_NAME`_SetRxAddress(uint8_t* addr, size_t addrSize){
  * @param pin    Pin that triggered this event.
  * @param action Action that lead to triggering this event.
  */
-void `$INSTANCE_NAME`_SetRxPipeAddress(uint8_t pipeNo, uint8_t* addr, size_t addrSize){
-    uint8_t reg = 0x00u;
-    
+void `$INSTANCE_NAME`_SetRxPipeAddress(uint8_t pipeNo, uint8_t *addr, size_t addrSize){
+
     switch (pipeNo){
         case 0:
-            reg = NRF_RX_ADDR_P0;
+            pipeNo = NRF_RX_ADDR_P0;
         break;
         case 1:
-            reg = NRF_RX_ADDR_P1;
+            pipeNo = NRF_RX_ADDR_P1;
         break;
         case 2:
-            reg = NRF_RX_ADDR_P2;
+            pipeNo = NRF_RX_ADDR_P2;
             addrSize = 1;
         break;
         case 3:
-            reg = NRF_RX_ADDR_P3;
+            pipeNo = NRF_RX_ADDR_P3;
             addrSize = 1;
         break;        
         case 4:
-            reg = NRF_RX_ADDR_P4;
+            pipeNo = NRF_RX_ADDR_P4;
             addrSize = 1;
         break;
         case 5:
-            reg = NRF_RX_ADDR_P5;
+            pipeNo = NRF_RX_ADDR_P5;
             addrSize = 1;
         break;
         default:
-            reg = NRF_RX_ADDR_P0;
+            pipeNo = NRF_RX_ADDR_P0;
         break;
-        
     }
         
-    `$INSTANCE_NAME`_WriteMultipleRegister(reg, addr, addrSize);
+    `$INSTANCE_NAME`_WriteMultipleRegister(pipeNo, addr, addrSize);
 }
 
 /**
@@ -184,7 +182,7 @@ void `$INSTANCE_NAME`_SetRxPipeAddress(uint8_t pipeNo, uint8_t* addr, size_t add
  * @param pin    Pin that triggered this event.
  * @param action Action that lead to triggering this event.
  */
-void `$INSTANCE_NAME`_SetTxAddress(uint8_t* addr, size_t addrSize){
+void `$INSTANCE_NAME`_SetTxAddress(uint8_t *addr, size_t addrSize){
     `$INSTANCE_NAME`_WriteMultipleRegister(NRF_TX_ADDR, addr, addrSize);
 }
 
@@ -204,7 +202,7 @@ void `$INSTANCE_NAME`_SetRxPayloadSize(uint8_t dataPipe, size_t payloadSize){
   @param payloadSize   Tamaño del array a mandar.
 */
 
-void `$INSTANCE_NAME`_FillTxFIFO(uint8_t* data, size_t payloadSize){
+void `$INSTANCE_NAME`_FillTxFIFO(uint8_t *data, size_t payloadSize){
     uint8_t i = 0;
 
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
@@ -223,7 +221,7 @@ void `$INSTANCE_NAME`_FillTxFIFO(uint8_t* data, size_t payloadSize){
  * @param data  Puntero al array que contiene la informacion a mandar.
  * @param payloadSize   Tamaño del array a mandar.
  */
-void `$INSTANCE_NAME`_TxTransmit(uint8_t* data, size_t payloadSize){
+void `$INSTANCE_NAME`_TxTransmit(uint8_t *data, size_t payloadSize){
     uint8_t i = 0;
 
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
@@ -244,6 +242,7 @@ void `$INSTANCE_NAME`_TxTransmit(uint8_t* data, size_t payloadSize){
  */
 bool `$INSTANCE_NAME`_DataReady(void){
     uint8_t data;
+
     `$INSTANCE_NAME`_ReadSingleRegister(NRF_STATUS, &data);
     if(NRF_STATUS_DATA_IS_RDY == data){
         return true;
@@ -265,7 +264,7 @@ void `$INSTANCE_NAME`_SetChannel(uint8_t channel){
  * @param flags Flag que vamos a limpiar.
  */
 void `$INSTANCE_NAME`_ResetStatusIRQ(uint8_t flags){
-        `$INSTANCE_NAME`_WriteBit(NRF_STATUS, flags, 1);
+    `$INSTANCE_NAME`_WriteBit(NRF_STATUS, flags, 1);
 }
 
 /**
@@ -304,7 +303,7 @@ void `$INSTANCE_NAME`_FlushTx(void){
  * @param pin    Pin that triggered this event.
  * @param action Action that lead to triggering this event.
  */
-void `$INSTANCE_NAME`_RxPayload(uint8_t* payload, size_t payloadSize){
+void `$INSTANCE_NAME`_RxPayload(uint8_t *payload, size_t payloadSize){
     `$INSTANCE_NAME`_ReadMultipleRegister(NRF_R_RX_PAYLOAD, payload, payloadSize);
 }
 
@@ -316,10 +315,9 @@ void `$INSTANCE_NAME`_EnableDynamicPayload(uint8_t pipe){
     `$INSTANCE_NAME`_WriteSingleRegister(NRF_DYNPD, pipe);
 }
 
-/* EN_DYN_ACK bit on FEATURE register must be set high to enables
-*  the W_TX_PAYLOAD_NOACK command. */
+/* EN_DYN_ACK bit on FEATURE register must be set high to enable the W_TX_PAYLOAD_NOACK command. */
 
-void `$INSTANCE_NAME`_TxTransmitWaitNoACK(uint8_t* data, size_t payloadSize){
+void `$INSTANCE_NAME`_TxTransmitWaitNoACK(uint8_t *data, size_t payloadSize){
     uint8_t i = 0;
 
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
@@ -333,7 +331,7 @@ void `$INSTANCE_NAME`_TxTransmitWaitNoACK(uint8_t* data, size_t payloadSize){
     `$INSTANCE_NAME`_TransmitPulse();
 }
 
-void `$INSTANCE_NAME`_RxWritePayload(uint8_t pipe, uint8_t* data, size_t payloadSize){
+void `$INSTANCE_NAME`_RxWritePayload(uint8_t pipe, uint8_t *data, size_t payloadSize){
     uint8_t i = 0;
 
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
@@ -354,12 +352,12 @@ void `$INSTANCE_NAME`_ReuseTxPayload(void){
     `$INSTANCE_NAME`_Ctrl_SS_Write(1);
 }
 
-void `$INSTANCE_NAME`_ReadFromDataPipe(uint8_t* pipe){
+void `$INSTANCE_NAME`_ReadFromDataPipe(uint8_t *pipe){
     `$INSTANCE_NAME`_ReadSingleRegister(NRF_STATUS, pipe);
     *pipe = (*pipe & 0x0Eu) >> 1;
 }
 
-void `$INSTANCE_NAME`_ResetIRQSource(uint8_t* source){
+void `$INSTANCE_NAME`_ResetIRQSource(uint8_t *source){
     
     if(`$INSTANCE_NAME`_GetStatus() & NRF_STATUS_RX_DR_MASK){ /* RX_DR: Data Received */
         *source = NRF_STATUS_RX_DR;
@@ -374,7 +372,7 @@ void `$INSTANCE_NAME`_ResetIRQSource(uint8_t* source){
 }
 
 /* Get the number of packets residing in the Rx FIFO on the specific pipe */
-void `$INSTANCE_NAME`_GetRxFIFOPacketCount(uint8_t pipe, uint8_t* count){
+void `$INSTANCE_NAME`_GetRxFIFOPacketCount(uint8_t pipe, uint8_t *count){
     
     switch(pipe){
         case 0:
@@ -396,7 +394,7 @@ void `$INSTANCE_NAME`_GetRxFIFOPacketCount(uint8_t pipe, uint8_t* count){
             pipe = NRF_RX_PW_P5;
         break;
         default:
-            pipe = NRF_RX_ADDR_P0;
+            pipe = NRF_RX_PW_P0;
         break;
     }
         
@@ -436,7 +434,7 @@ void `$INSTANCE_NAME`_GetLostPackets(uint8_t* lostPackets){
 /* Primitive Functions */
 
 uint8_t `$INSTANCE_NAME`_ReadBit(uint8_t reg, uint8_t bit){
-	uint8_t temp = 0x00u;
+	uint8_t temp;
     
     `$INSTANCE_NAME`_ReadSingleRegister(reg, &temp);
     if(!(temp & (1 << bit))){
@@ -446,7 +444,7 @@ uint8_t `$INSTANCE_NAME`_ReadBit(uint8_t reg, uint8_t bit){
     }
 }
 
-void `$INSTANCE_NAME`_ReadSingleRegister(uint8_t reg, uint8_t* data){
+void `$INSTANCE_NAME`_ReadSingleRegister(uint8_t reg, uint8_t *data){
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
     `$INSTANCE_NAME`_Ctrl_SS_Write(0);
     `$INSTANCE_NAME`_SPI_WriteTxData(NRF_R_REGISTER | reg);
@@ -457,7 +455,7 @@ void `$INSTANCE_NAME`_ReadSingleRegister(uint8_t reg, uint8_t* data){
     *data = `$INSTANCE_NAME`_SPI_ReadRxData();
 }
 
-void `$INSTANCE_NAME`_ReadMultipleRegister(uint8_t reg, uint8_t* bufIn , size_t bufSize){
+void `$INSTANCE_NAME`_ReadMultipleRegister(uint8_t reg, uint8_t *bufIn , size_t bufSize){
 	uint8_t i = 0, j = 0;
 	
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
@@ -475,7 +473,7 @@ void `$INSTANCE_NAME`_ReadMultipleRegister(uint8_t reg, uint8_t* bufIn , size_t 
 }
 
 void `$INSTANCE_NAME`_WriteBit(uint8_t reg, uint8_t bit, uint8_t value){
-	uint8_t temp = 0x00u;
+	uint8_t temp;
     
     `$INSTANCE_NAME`_ReadSingleRegister(reg, &temp);
     if(value){
@@ -495,7 +493,7 @@ void `$INSTANCE_NAME`_WriteSingleRegister(uint8_t reg, uint8_t data){
     `$INSTANCE_NAME`_Ctrl_SS_Write(1);
 }
 
-void `$INSTANCE_NAME`_WriteMultipleRegister(uint8_t reg, uint8_t* bufIn, size_t bufSize){
+void `$INSTANCE_NAME`_WriteMultipleRegister(uint8_t reg, uint8_t *bufIn, size_t bufSize){
 	uint8_t i = 0;
 
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
@@ -508,8 +506,15 @@ void `$INSTANCE_NAME`_WriteMultipleRegister(uint8_t reg, uint8_t* bufIn, size_t 
     `$INSTANCE_NAME`_Ctrl_SS_Write(1);
 }
 
+void `$INSTANCE_NAME`_SendCommand(uint8_t cmd){
+    `$INSTANCE_NAME`_SPI_ClearRxBuffer();
+    `$INSTANCE_NAME`_Ctrl_SS_Write(0);
+    `$INSTANCE_NAME`_SPI_WriteTxData(cmd);
+    while(!(`$INSTANCE_NAME`_SPI_ReadTxStatus() & `$INSTANCE_NAME`_SPI_STS_SPI_IDLE));
+    `$INSTANCE_NAME`_Ctrl_SS_Write(1);
+}
 
-void writeBufferTest(uint8_t reg, uint8_t* bufIn, size_t bufSize){
+void writeBufferTest(uint8_t reg, uint8_t *bufIn, size_t bufSize){
     `$INSTANCE_NAME`_SPI_ClearRxBuffer();
 
     uint8_t auxBuffer[(bufSize + 1)];

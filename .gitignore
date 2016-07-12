@@ -13,6 +13,9 @@ ComponentUpdateLog.txt
 *.cydsn/*.Xwx47
 *.cydsn/*.Estudiante 1
 
+# Random file
+*.cylib/CortexM0/
+
 #Projects optional files
 *.cydsn/codegentemp/
 *.cydsn/Generated_Source/
